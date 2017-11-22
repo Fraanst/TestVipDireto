@@ -65,6 +65,7 @@ namespace FluxosTestes_Vip.Fluxo_Site
                 CadastroCompleto_Site();
                 RealizaBuscas_Site();
                 LanceCarro_Logado();
+                fecha();
             }
             catch(Exception e)
             {
