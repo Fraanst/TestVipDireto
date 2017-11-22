@@ -4,6 +4,7 @@ using FluxosTestes_Vip.Fluxo_Site.Controller;
 using OpenQA.Selenium.Chrome;
 using System.Configuration;
 using System.Threading;
+using FluxosTestes_Vip.Controller;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using OpenQA.Selenium;
@@ -16,6 +17,8 @@ namespace FluxosTestes_Vip.Fluxo_Site
 
     {
         PaginaBase PaginaBase = new PaginaBase();
+        QueryDAO QueryDAO = new QueryDAO();
+        WritetextFile WritetextFile = new WritetextFile();
         private string _screenshotErro = ConfigurationManager.AppSettings["screenshotsPath"];
         private string driverPath = ConfigurationManager.AppSettings["chromedriverPath"];
         ChromeDriver _chrome;
@@ -25,7 +28,6 @@ namespace FluxosTestes_Vip.Fluxo_Site
         {
             _chrome = new ChromeDriver();
         }
-
         #endregion
 
         #region Atributos
@@ -41,6 +43,8 @@ namespace FluxosTestes_Vip.Fluxo_Site
         public string cep = "80010080";
         public string EndNumero = "226";
         public string EndCom = "Andar 9";
+        public string ValorMin = "1000000";
+        public string Valormax = "2000000";
         //links menu
         public string LinkDados = "MEUS DADOS";
         #endregion
@@ -51,11 +55,27 @@ namespace FluxosTestes_Vip.Fluxo_Site
             _chrome.Close();
         }
         #endregion
+        [TestMethod]
+        public void FluxoTeste_Darlance()
+        {
+            try
+            {
+                Cadastro_Site();
+                Login_Site();
+                CadastroCompleto_Site();
+                RealizaBuscas_Site();
+                LanceCarro_Logado();
+            }
+            catch(Exception e)
+            {
+                var s = _chrome.GetScreenshot();
+                s.SaveAsFile(_screenshotErro + "\\FinalizarCadastro_site.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+            }
+        }
 
         #region Metodos Pagina principal
 
         #region  Cadastro Dev
-        [TestMethod]
         public void Cadastro_Site()
         {
             try
@@ -73,12 +93,11 @@ namespace FluxosTestes_Vip.Fluxo_Site
                 Thread.Sleep(1000);
                 _chrome.FindElementByCssSelector("#contact_form > div > div.col-md-6.col-md-offset-3 > button").Click();
                 Thread.Sleep(1000);
-                fecha();
             }
             catch (Exception ex)
             {
                 var s = _chrome.GetScreenshot();
-                s.SaveAsFile(ConfigurationManager.AppSettings["_screenshotErro"] + "\\Cadastro_Hom.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                s.SaveAsFile(_screenshotErro + "\\Cadastro_Hom.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         }
 
@@ -102,13 +121,13 @@ namespace FluxosTestes_Vip.Fluxo_Site
             catch (Exception e)
             {
                 var s = _chrome.GetScreenshot(); ;
-                s.SaveAsFile(ConfigurationManager.AppSettings["_screenshotErro"] + "\\Login_Hom.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                s.SaveAsFile(_screenshotErro + "\\Login_Hom.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         }
         #endregion
 
-        #region Cadastro
-        [TestMethod]
+        #region Cadastro Final
+        
         public void CadastroCompleto_Site()
         {
             try
@@ -153,33 +172,21 @@ namespace FluxosTestes_Vip.Fluxo_Site
                 _chrome.FindElementById("Endereco_Complemento").SendKeys(EndCom);
                 Thread.Sleep(1000);
                 _chrome.FindElementByCssSelector("#form-control > div.row.col-md-12.col-sm-12.col-xs-12.col-md-offset-4 > div > button").Click();
-           
-
-                fecha();
+                //COnfirma E-mail
+                QueryDAO.Update_email();
+                //fecha();
 
             }
             catch (Exception e)
             {
                 var s = _chrome.GetScreenshot();
-                s.SaveAsFile(ConfigurationManager.AppSettings["_screenshotErro"] + "\\FinalizarCadastro_site", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                s.SaveAsFile(_screenshotErro + "\\FinalizarCadastro_site.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         }
         #endregion
-        #region Update E-mail
-        public void ConfirmaEmail()
-        {
-            try
-            {
+ 
 
-            }
-            catch(Exception e)
-            {
-
-            }
-        }
-        #endregion
-
-        // Terminar Realizar Busca
+        
         #region Realiza Buscas Dev
         [TestMethod]
         public void RealizaBuscas_Site()
@@ -199,14 +206,20 @@ namespace FluxosTestes_Vip.Fluxo_Site
                 Wait(_chrome).Until(ExpectedConditions.UrlContains("Veiculos/ListarVeiculos"));
                 PaginaBase.NavegaDev(_chrome);
                 Thread.Sleep(1000);
-                fecha();
+                // Buscando por valor do veioculo
+                AjustSendKeys.SendKeysById("ValorMinimoCarro", ValorMin, _chrome);
+                AjustSendKeys.SendKeysById("ValorMaximoCarro", Valormax, _chrome);
+                _chrome.FindElementByCssSelector("#carros > div > div > div:nth-child(6) > div > button").Click();
+                Thread.Sleep(1000);
+                Wait(_chrome).Until(ExpectedConditions.UrlContains("Veiculos/ListarVeiculos"));
+                //fecha();
 
 
             }
             catch (Exception e)
             {
                 var s = _chrome.GetScreenshot();
-                s.SaveAsFile(ConfigurationManager.AppSettings["_screenshotErro"] + "\\RealizaBusca", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                s.SaveAsFile(_screenshotErro + "\\RealizaBusca.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         }
         #endregion
@@ -235,38 +248,37 @@ namespace FluxosTestes_Vip.Fluxo_Site
             catch (Exception e)
             {
                 var s = _chrome.GetScreenshot();
-                s.SaveAsFile(ConfigurationManager.AppSettings["_screenshotErro"] + "\\Darlance_carro", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                s.SaveAsFile(_screenshotErro + "\\Darlance_carro.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         }
         #endregion
 
         #region Dar Lance Carro Logado DEV
-        [TestMethod]
         public void LanceCarro_Logado()
         {
             try
             {
-                Login_Site();
-               
+                //NavegaDev(_chrome);
+                //Login_Site();
                 //Lance Minimo
                 _chrome.FindElementByCssSelector("#sidebar-menu-container > div > div.sidebar-menu-inner > section > div > div > div:nth-child(3) > div:nth-child(2) > div > a > div").Click();
                 Thread.Sleep(1000);
                 IWebElement valor = _chrome.FindElementByClassName("valorDetalhe");
                 _chrome.FindElementByCssSelector("#lance_1").Click();
+                IWebElement Valorlance = _chrome.FindElementByCssSelector("#lance_1");
                 IWebElement valor_Atual = _chrome.FindElementByClassName("valorDetalhe");
                 if (valor.Text.Equals(valor_Atual.Text))
                 {
-                    //SalvarLog com erro
-                    fecha();
+                    string deuruim = "Erro: Realizado lance no valor "+Valorlance+"~leilão continua no valor "+valor+".";
+                    WritetextFile.SalvaTxt(deuruim);
                 }
-                fecha();
-
-
+                string deuboa = "Realizado lance com Sucesso";
+                WritetextFile.SalvaTxt(deuboa);
             }
             catch (Exception e)
             {
                 var s = _chrome.GetScreenshot();
-                s.SaveAsFile(ConfigurationManager.AppSettings["_screenshotErro"] + "\\Darlance_carro", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                s.SaveAsFile(_screenshotErro + "\\Darlance_carro.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         }
         #endregion
@@ -286,7 +298,7 @@ namespace FluxosTestes_Vip.Fluxo_Site
             catch (Exception e)
             {
                 var s = _chrome.GetScreenshot();
-                s.SaveAsFile(ConfigurationManager.AppSettings["_screenshotErro"] + "\\Agendaleilao_Site.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                s.SaveAsFile(_screenshotErro + "\\Agendaleilao_Site.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         }
         #endregion
@@ -318,7 +330,7 @@ namespace FluxosTestes_Vip.Fluxo_Site
             catch(Exception e)
             {
                 var s = _chrome.GetScreenshot();
-                s.SaveAsFile(ConfigurationManager.AppSettings["_screenshotErro"] + "\\Planobasico.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                s.SaveAsFile(_screenshotErro + "\\Planobasico.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         }
         #endregion
