@@ -150,7 +150,13 @@ namespace FluxosTestes_Vip.Fluxo_Site
                 //Preenche todos os dados
                 _chrome.FindElementByCssSelector("#form-control > div:nth-child(2) > div > div > div:nth-child(3) > div:nth-child(1) > div > label").Click();
                 Thread.Sleep(1000);
-                _chrome.FindElementById("CPF").SendKeys(CPF);
+                for (int i = 0; i < CPF.Length; i++)
+                {
+                    IWebElement element = _chrome.FindElementById("CPF");
+                    string ele = CPF.Substring(i, 1);
+                    element.SendKeys(ele);
+                    Thread.Sleep(10);
+                }
                 _chrome.FindElementById("RG").SendKeys(RG);
                 _chrome.FindElementByCssSelector("#OrgaoExpedidor > option:nth-child(2)").Click();
                 _chrome.FindElementById("dataExpedicao").SendKeys(DtaRg);
