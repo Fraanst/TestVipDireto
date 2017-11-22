@@ -55,6 +55,7 @@ namespace FluxosTestes_Vip.Fluxo_Site
         #region Metodos Pagina principal
 
         #region  Cadastro Dev
+        [TestMethod]
         public void Cadastro_Site()
         {
             try
@@ -72,7 +73,6 @@ namespace FluxosTestes_Vip.Fluxo_Site
                 Thread.Sleep(1000);
                 _chrome.FindElementByCssSelector("#contact_form > div > div.col-md-6.col-md-offset-3 > button").Click();
                 Thread.Sleep(1000);
-
                 fecha();
             }
             catch (Exception ex)
@@ -113,29 +113,20 @@ namespace FluxosTestes_Vip.Fluxo_Site
         {
             try
             {
-                CadastroCompleto_Site();
-                //Login_Site();
+                NavegaDev(_chrome);
+                Login_Site();
                 _chrome.FindElementByCssSelector("#main-header > div > nav > ul > li:nth-child(3) > div > a").Click();
-               // _chrome.FindElementByXPath("//*[@id=\"main - header\"]/div/nav/ul/li[3]/div/a");
+                // _chrome.FindElementByXPath("//*[@id=\"main - header\"]/div/nav/ul/li[3]/div/a");
                 IList<IWebElement> menu = _chrome.FindElementsByCssSelector("#listing-cars > div.col-md-12.nopadding > div > div > div > ul > li > a");
-                //   IWebElement link = _chrome.FindElementByCssSelector("#listing-cars > div.col-md-12.nopadding > div > div > div > ul > li:nth-child(3) > a");
-                Thread.Sleep(1000);
+               Thread.Sleep(1000);
                 foreach (var ele in menu)
                 {
-                    Thread.Sleep(1000);
                     if (ele.Text.Equals(LinkDados))
                     {
                         ele.Click();
                     }
                 }
                 Thread.Sleep(1000);
-                //Limpa Todos dados
-                _chrome.FindElementById("CPF").Clear();
-                _chrome.FindElementById("RG").Clear();
-                _chrome.FindElementByCssSelector("#OrgaoExpedidor > option:nth-child(2)").Clear();
-                _chrome.FindElementById("dataExpedicao").Clear();
-                _chrome.FindElementById("Celular").Clear();
-                _chrome.FindElementById("Telefone").Clear();
                 //Preenche todos os dados
                 _chrome.FindElementByCssSelector("#form-control > div:nth-child(2) > div > div > div:nth-child(3) > div:nth-child(1) > div > label").Click();
                 Thread.Sleep(1000);
@@ -145,12 +136,25 @@ namespace FluxosTestes_Vip.Fluxo_Site
                 _chrome.FindElementById("dataExpedicao").SendKeys(DtaRg);
                 _chrome.FindElementById("Celular").SendKeys(Cel);
                 _chrome.FindElementById("Telefone").SendKeys(tel);
-                _chrome.FindElementById("Endereco_CEP").SendKeys(cep);
+                Thread.Sleep(1000);
+                AjustClear.ClearById("Endereco_CEP", _chrome);
+                Thread.Sleep(1000);
+                for (int i = 0; i < cep.Length; i++)
+                {
+                    IWebElement element = _chrome.FindElementById("Endereco_CEP");
+                    string ele = cep.Substring(i, 1);
+                    element.SendKeys(ele);
+                    Thread.Sleep(10);
+                 }
+               // _chrome.FindElementById("Endereco_CEP").SendKeys(cep);
+                Thread.Sleep(2000);
                 _chrome.FindElementById("Endereco_Numero").SendKeys(EndNumero);
                 Thread.Sleep(1000);
                 _chrome.FindElementById("Endereco_Complemento").SendKeys(EndCom);
-                _chrome.FindElementByClassName("btn-block_btn-perso").Click();
+                Thread.Sleep(1000);
                 _chrome.FindElementByCssSelector("#form-control > div.row.col-md-12.col-sm-12.col-xs-12.col-md-offset-4 > div > button").Click();
+           
+
                 fecha();
 
             }
@@ -161,7 +165,19 @@ namespace FluxosTestes_Vip.Fluxo_Site
             }
         }
         #endregion
+        #region Update E-mail
+        public void ConfirmaEmail()
+        {
+            try
+            {
 
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+        #endregion
 
         // Terminar Realizar Busca
         #region Realiza Buscas Dev
