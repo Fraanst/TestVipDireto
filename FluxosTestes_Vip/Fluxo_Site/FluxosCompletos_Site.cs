@@ -30,6 +30,8 @@ namespace FluxosTestes_Vip.Fluxo_Site
         }
         #endregion
 
+        //MUDAR CPF ERRO IGUAL CEP
+
         #region Atributos
         public string Nome = "Paulo Ricardo";
         public string Apelido = "paulo";
@@ -194,6 +196,7 @@ namespace FluxosTestes_Vip.Fluxo_Site
         {
             try
             {
+            
                 NavegaDev(_chrome);
                 // preenche marca do carro
                 _chrome.FindElementByCssSelector("#ca\\20 MarcaCarro > option:nth-child(5)").Click();

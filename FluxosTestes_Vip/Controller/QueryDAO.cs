@@ -16,5 +16,10 @@ namespace FluxosTestes_Vip.Controller
         {        
            return  Con.ExecuteNonQuery("Update VipDireto.Usuario set IsEmailConfirmado= 1 where CPF = '136.628.961-49'");
         }
+
+        public static bool Delete_User()
+        {
+            return Con.ExecuteNonQuery("");
+        }
     }
 }
