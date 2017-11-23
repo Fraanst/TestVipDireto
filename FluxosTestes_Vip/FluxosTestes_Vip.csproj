@@ -93,6 +93,9 @@
     </Content>
     <Content Include="Fluxo_Back\chromedriver.exe" />
     <Content Include="Fluxo_Site\chromedriver.exe" />
+    <Content Include="MSTest.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
