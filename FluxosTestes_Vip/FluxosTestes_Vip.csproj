@@ -72,6 +72,7 @@
     <Compile Include="Controller\PaginaBase.cs" />
     <Compile Include="Controller\QueryDAO.cs" />
     <Compile Include="Controller\SaveText\WritetextFile.cs" />
+    <Compile Include="Fluxo_Back\FluxoCompletos_Back.cs" />
     <Compile Include="Fluxo_Site\FluxosCompletos_Site.cs" />
     <Compile Include="Fluxo_Site\Rodape\TestRodape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

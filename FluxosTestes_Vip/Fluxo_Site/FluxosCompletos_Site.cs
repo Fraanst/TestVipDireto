@@ -83,8 +83,7 @@ namespace FluxosTestes_Vip.Fluxo_Site
             {
                 NavegaDev(_chrome);
                 Thread.Sleep(1000);
-                _chrome.FindElementByCssSelector("#main-header > div > nav > ul > li:nth-child(3) > div > a:nth-child(3)").Click();
-                //Preenche Campos
+                AjustClick.ClickByXPath("//*[@id=\"main - header\"]/div/nav/ul/li[6]/div/a[2]", _chrome);
                 _chrome.FindElementByCssSelector("#Nome").SendKeys(Nome);
                 _chrome.FindElementByCssSelector("#Apelido").SendKeys(Apelido);
                 _chrome.FindElementByCssSelector("#Email").SendKeys(Email);
@@ -133,8 +132,8 @@ namespace FluxosTestes_Vip.Fluxo_Site
         {
             try
             {
-                NavegaDev(_chrome);
-                Login_Site();
+                //NavegaDev(_chrome);
+                //Login_Site();
                 _chrome.FindElementByCssSelector("#main-header > div > nav > ul > li:nth-child(3) > div > a").Click();
                 // _chrome.FindElementByXPath("//*[@id=\"main - header\"]/div/nav/ul/li[3]/div/a");
                 IList<IWebElement> menu = _chrome.FindElementsByCssSelector("#listing-cars > div.col-md-12.nopadding > div > div > div > ul > li > a");
@@ -230,7 +229,7 @@ namespace FluxosTestes_Vip.Fluxo_Site
             }
         }
         #endregion
-
+       
        
         #region Dar Lance Carro Deslogado DEV
         [TestMethod]
@@ -246,7 +245,7 @@ namespace FluxosTestes_Vip.Fluxo_Site
                 IWebElement valor_Atual = _chrome.FindElementByClassName("valorDetalhe");
                 if (valor.Text.Equals(valor_Atual.Text))
                 {
-                    //SalvarLog com erro
+                    
                     fecha();
                 }
                 fecha();

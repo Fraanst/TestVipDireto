@@ -14,9 +14,10 @@ namespace FluxosTestes_Vip.Fluxo_Site.Controller
     {
         private string driverPath = ConfigurationManager.AppSettings["chromedriverPath"];
         private string _screenshotErro = ConfigurationManager.AppSettings["screenshotsPath"];
-        private string url_teste = ConfigurationManager.AppSettings["url_teste"];
-        private string url_Hom = ConfigurationManager.AppSettings["url_Hom"];
-        private string Url_Dev = ConfigurationManager.AppSettings["url_dev"];
+        private string url_teste_site = ConfigurationManager.AppSettings["url_teste"];
+        private string url_Hom_Site = ConfigurationManager.AppSettings["url_Hom"];
+        private string Url_Dev_site = ConfigurationManager.AppSettings["url_dev"];
+        private string Url_back = ConfigurationManager.AppSettings["url_Back"];
 
         ChromeDriver _driver;
 
@@ -49,12 +50,37 @@ namespace FluxosTestes_Vip.Fluxo_Site.Controller
         }
         #endregion
 
-        #region Navega Dev
+        #region BACK
+
+        #region Navega Dev_back
+        public void NavegaBack(ChromeDriver chrome)
+        {
+            try
+            {
+                chrome.Navigate().GoToUrl(Url_back);
+                Thread.Sleep(1000);
+
+            }
+            catch(Exception e)
+            {
+
+            }
+
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region SITE
+
+        #region Navega Dev 
         public void NavegaDev(ChromeDriver chromeDriver)
         {
             try
             {
-                chromeDriver.Navigate().GoToUrl(Url_Dev);
+                chromeDriver.Navigate().GoToUrl(Url_Dev_site);
                 Thread.Sleep(1000);
 
             }
@@ -69,7 +95,7 @@ namespace FluxosTestes_Vip.Fluxo_Site.Controller
         #region Navega Teste
         public void NavegaTeste(ChromeDriver chromeDriver)
         {
-            chromeDriver.Navigate().GoToUrl(url_teste);
+            chromeDriver.Navigate().GoToUrl(url_teste_site);
             Thread.Sleep(1000);
         }
         #endregion
@@ -77,9 +103,11 @@ namespace FluxosTestes_Vip.Fluxo_Site.Controller
         #region Navega Hom
         public void NavegaHom(ChromeDriver chromeDriver)
         {
-            chromeDriver.Navigate().GoToUrl(url_Hom);
+            chromeDriver.Navigate().GoToUrl(url_Hom_Site);
             Thread.Sleep(1000);
         }
+        #endregion
+
         #endregion
 
         #region Wait
