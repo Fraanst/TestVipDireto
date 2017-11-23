@@ -181,6 +181,9 @@ namespace FluxosTestes_Vip.Fluxo_Back
             }
             catch (Exception e)
             {
+                WritetextFile.SalvaTxt("Erro: Erro ao tentar criar leilão. Tela do erro na pasta Falhas");
+                var s = _chrome.GetScreenshot();
+                s.SaveAsFile(_screenshotErro + "Criarleilao_alt.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
 
             }
         }
