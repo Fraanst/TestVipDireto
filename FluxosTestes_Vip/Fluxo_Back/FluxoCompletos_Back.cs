@@ -63,7 +63,25 @@ namespace FluxosTestes_Vip.Fluxo_Back
             }
         }
         #endregion
-        
+ 
+        #region Consulta leilões
+        [TestMethod]
+        public void ConsultaLeiloes()
+        {
+            try
+            {
+                LoginBack();
+
+
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+
+        #endregion
+
         #region Criar leilão  Fluxo principal
         [TestMethod]
         public void CriarLeilao()
@@ -127,8 +145,10 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 s.SaveAsFile(_screenshotErro + "CriarLeilao.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg); 
             }
         }
+        #endregion
 
         #region Criar leilão Fluxo alternativo
+        [TestMethod]
         public void Criarleilao_alt()
         {
             try
@@ -187,10 +207,30 @@ namespace FluxosTestes_Vip.Fluxo_Back
 
             }
         }
-#endregion
+        #endregion
 
+        #region Testes Rodapé
+        [TestMethod]
+        public void Rodapé_Back()
+        {
+            try
+            {
+                LoginBack();
+
+            }
+            catch(Exception e)
+            {
+                WritetextFile.SalvaTxt("Erro: Erro ao tentar Acessar links de Rodapé. Tela do erro na pasta Falhas");
+                var s = _chrome.GetScreenshot();
+                s.SaveAsFile(_screenshotErro + "//Rodapé_Back.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+
+            }
+        }
 
         #endregion
+
+
+
         #endregion
 
 
