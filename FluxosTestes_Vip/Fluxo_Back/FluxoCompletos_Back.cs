@@ -19,18 +19,19 @@ namespace FluxosTestes_Vip.Fluxo_Back
         PaginaBase PaginaBase = new PaginaBase();
         QueryDAO QueryDAO = new QueryDAO();
         WritetextFile WritetextFile = new WritetextFile();
-        private string _screenshotErro = ConfigurationManager.AppSettings["screenshotsPath"];
+        private string _screenshotErro = ConfigurationManager.AppSettings["_screenshotsPath"];
         private string driverPath = ConfigurationManager.AppSettings["chromedriverPath"];
         ChromeDriver _chrome;
-        ChromeDriver _chrome2;
+        
 
         #region Contrutor 
         public FluxoCompletos_Back()
         {
             _chrome = new ChromeDriver();
-            _chrome2 = new ChromeDriver();
+
         }
         #endregion
+
         #region atributos
         public string Login = "admin";
         public string Senha = "123456";
@@ -51,13 +52,13 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 Thread.Sleep(1000);
                 AjustSendKeys.SendKeysById("Login", Login, _chrome);
                 AjustSendKeys.SendKeysById("Senha",Senha, _chrome);
-                AjustClick.ClickByXPath("/html/body/div/div/div[1]/div[1]/form/div[2]/div[2]/button", _chrome);
+                AjustClick.ClickById("btnLogar", _chrome);
                 Thread.Sleep(200);
                 WritetextFile.SalvaTxt("Login Realizado Com sucesso");
             }
             catch
             {
-                WritetextFile.SalvaTxt("Erro: Erro ao tentar realizar Login. Tela do erro na pasta Falhas");
+                WritetextFile.SalvaTxtBk("Erro: Erro ao tentar realizar Login. Tela do erro na pasta Falhas");
                 var s = _chrome.GetScreenshot();
                 s.SaveAsFile(_screenshotErro + "//LoginBack.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
@@ -71,11 +72,18 @@ namespace FluxosTestes_Vip.Fluxo_Back
             try
             {
                 LoginBack();
-
+                AjustClick.ClickById("menuConsultarLeiloes", _chrome);
+                if (_chrome.Url.Contains("Leilao/ListarLeiloes"))
+                {
+                    WritetextFile.SalvaTxtBk("Consulta de leilões realizada com sucesso.");
+                }
 
             }
             catch(Exception e)
             {
+                WritetextFile.SalvaTxt("Erro: Erro ao tentar Acessar Consulta de Leilões. Tela do erro na pasta Falhas");
+                var s = _chrome.GetScreenshot();
+                s.SaveAsFile(_screenshotErro + "//ConsultaLeiloes.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
 
             }
         }
@@ -89,15 +97,9 @@ namespace FluxosTestes_Vip.Fluxo_Back
             try
             { 
                 LoginBack();
-                IList<IWebElement> Menu = _chrome.FindElementsByCssSelector("body > div > div:nth-child(1) > div > div > div.page-header-menu > div > div > ul > li:nth-child(1) > ul > li");
-                foreach (var ele in Menu)
-                {
-                    if (ele.Text.Equals("Criar"))
-                    {
-                        ele.Click();
-                    }
-                }
-                
+                AjustClick.ClickById("menuLeiloes", _chrome);
+                AjustClick.ClickById("menuCriarLeilao", _chrome);
+                Thread.Sleep(1000);
                 AjustSendKeys.SendKeysByXPath("//*[@id=\"form_control_1\"]", codigo, _chrome);
                 IList<IWebElement> ambiente = _chrome.FindElementsByCssSelector("#TipoLeilao > option");
                 foreach(var ele in ambiente)
@@ -126,16 +128,23 @@ namespace FluxosTestes_Vip.Fluxo_Back
                     }
                 }
                 Thread.Sleep(1000);
-                AjustSendKeys.SendKeysById("DataInicio", Dtaleilao, _chrome);
-                // AjustSendKeys.SendKeysById("", DtaFimleilao, _chrome);
-                _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div:nth-child(3) > div > input[type=\"file\"]").Click();
+                _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div.col-md-6 > div:nth-child(1) > div > span > button").Click();
+                _chrome.FindElementByCssSelector("body > div:nth-child(48) > div.datetimepicker-days > table > tbody > tr:nth-child(5) > td:nth-child(2)").Click();
+                _chrome.FindElementByCssSelector("body > div:nth-child(48) > div.datetimepicker-hours > table > tbody > tr > td > span:nth-child(10)").Click();
+                _chrome.FindElementByCssSelector("body > div:nth-child(48) > div.datetimepicker-minutes > table > tbody > tr > td > span:nth-child(7)").Click();
+                Thread.Sleep(1000);
+                //_chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div:nth-child(3) > div > input[type=\"file\"]").Click();
                 _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div.col-md-12.MarginGeral > div > button").Click();
-                WritetextFile.SalvaTxt("Leilão criado com Sucesso");
-                
-                //Criar Leioloeiro
-                //_chrome.FindElementByCssSelector("#form-control > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > a").Click();
+                if (_chrome.Url.Contains("/Leilao/ListarLeiloes"))
+                {
+                    WritetextFile.SalvaTxtBk("Leilão criado com Sucesso");
+                    _chrome.Close();
+                }
 
-
+                WritetextFile.SalvaTxtBk("Erro: Não foi possivel criar leilão. Tela do erro na pasta Falhas");
+                var s = _chrome.GetScreenshot();
+                s.SaveAsFile(_screenshotErro + "CriarLeilao.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                _chrome.Close();          
 
             }
             catch (Exception e)
@@ -154,15 +163,9 @@ namespace FluxosTestes_Vip.Fluxo_Back
             try
             {
                 LoginBack();
-                IList<IWebElement> Menu = _chrome.FindElementsByCssSelector("body > div > div:nth-child(1) > div > div > div.page-header-menu > div > div > ul > li:nth-child(1) > ul > li");
-                foreach (var ele in Menu)
-                {
-                    if (ele.Text.Equals("Criar"))
-                    {
-                        ele.Click();
-                    }
-                }
-
+                AjustClick.ClickById("menuLeiloes", _chrome);
+                AjustClick.ClickById("menuCriarLeilao", _chrome);
+                Thread.Sleep(1000);
                 AjustSendKeys.SendKeysByXPath("//*[@id=\"form_control_1\"]", codigo, _chrome);
                 IList<IWebElement> ambiente = _chrome.FindElementsByCssSelector("#TipoLeilao > option");
                 foreach (var ele in ambiente)
@@ -191,21 +194,31 @@ namespace FluxosTestes_Vip.Fluxo_Back
                     }
                 }
                 Thread.Sleep(1000);
-                _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div.col-md-6 > div:nth-child(3) > div > input").SendKeys(Dtaleilao);
-                _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div.col-md-6 > div:nth-child(4) > div > input").SendKeys(DtaFimleilao);
-                // AjustSendKeys.SendKeysById("", DtaFimleilao, _chrome);
-                _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div:nth-child(3) > div > input[type=\"file\"]").Click();
+                _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div.col-md-6 > div:nth-child(3) > div > span > button").Click();
+                _chrome.FindElementByCssSelector("body > div:nth-child(46) > div.datetimepicker-days > table > tbody > tr:nth-child(5) > td:nth-child(3)").Click();
+                _chrome.FindElementByCssSelector("body > div:nth-child(46) > div.datetimepicker-hours > table > tbody > tr > td > span:nth-child(17)").Click();
+                _chrome.FindElementByCssSelector("body > div:nth-child(46) > div.datetimepicker-minutes > table > tbody > tr > td > span:nth-child(9)").Click();
+                Thread.Sleep(1000);
+                //_chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div:nth-child(3) > div > input[type=\"file\"]").Click();
                 _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div.col-md-12.MarginGeral > div > button").Click();
-                WritetextFile.SalvaTxt("Leilão criado com Sucesso");
+                if (_chrome.Url.Contains("/Leilao/ListarLeiloes"))
+                {
+                    WritetextFile.SalvaTxtBk("Leilão criado com Sucesso");
+                    _chrome.Close();
+                }
 
+                WritetextFile.SalvaTxtBk("Erro: Não foi possivel criar leilão. Tela do erro na pasta Falhas");
+                var s = _chrome.GetScreenshot();
+                s.SaveAsFile(_screenshotErro + "CriarLeilao.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
+                _chrome.Close();
             }
             catch (Exception e)
             {
                 WritetextFile.SalvaTxt("Erro: Erro ao tentar criar leilão. Tela do erro na pasta Falhas");
                 var s = _chrome.GetScreenshot();
-                s.SaveAsFile(_screenshotErro + "Criarleilao_alt.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
-
+                s.SaveAsFile(_screenshotErro + "CriarLeilao.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
+        
         }
         #endregion
 
@@ -216,7 +229,46 @@ namespace FluxosTestes_Vip.Fluxo_Back
             try
             {
                 LoginBack();
+                //Veiculos Cadastrados
+                AjustClick.ClickById("qtdVeiculos", _chrome);
+                string success = string.Format("{0}", Environment.NewLine);
+                string erro1 = string.Format("{0}", Environment.NewLine);
 
+                if (_chrome.Url.Contains("Veiculo/ListarVeiculos"))
+                {
+                  success += string.Format("Sucesso: Link Quantidade de Veículos ok {0}", Environment.NewLine);
+
+                }
+                else
+                {
+                  erro1 += string.Format("Erro: Não foi possivel acessar o Link Quantidade de Veículos {0}", Environment.NewLine);
+                }
+                
+                LoginBack();
+                AjustClick.ClickById("qtdLeiloes", _chrome);
+                if (_chrome.Url.Contains("Leilao/ListarLeiloes"))
+                {
+                   success += string.Format("Sucesso: Link Leilões ok {0}", Environment.NewLine);
+                }
+                else
+                {
+                    erro1 += string.Format("Erro: Não foi possivel acessar o Link Lista de Leilões {0}", Environment.NewLine);
+
+                }
+                LoginBack();
+                AjustClick.ClickById("qtdUsuarios", _chrome);
+                if (_chrome.Url.Contains("Usuario/ListarUsuarios"))
+                {
+                    success += string.Format("Sucesso: Link Lista de Usuarios ok{0}", Environment.NewLine);
+
+
+                }
+                else
+                {
+                    erro1 += string.Format("Erro: Não foi possivel acessar o Link Lista de Usuarios {0}", Environment.NewLine);
+                }
+                WritetextFile.SalvaTxtBk(success+"\n"+erro1);
+                _chrome.Close();
             }
             catch(Exception e)
             {
