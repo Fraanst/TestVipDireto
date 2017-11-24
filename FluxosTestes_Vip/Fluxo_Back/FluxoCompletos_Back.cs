@@ -22,7 +22,10 @@ namespace FluxosTestes_Vip.Fluxo_Back
         private string _screenshotErro = ConfigurationManager.AppSettings["_screenshotsPath"];
         private string driverPath = ConfigurationManager.AppSettings["chromedriverPath"];
         ChromeDriver _chrome;
-        
+
+        string success = string.Format("{0}", Environment.NewLine);
+        string erro = string.Format("{0}", Environment.NewLine);
+
 
         #region Contrutor 
         public FluxoCompletos_Back()
@@ -54,11 +57,12 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 AjustSendKeys.SendKeysById("Senha",Senha, _chrome);
                 AjustClick.ClickById("btnLogar", _chrome);
                 Thread.Sleep(200);
-                WritetextFile.SalvaTxt("Login Realizado Com sucesso");
+                success += string.Format("Sucesso: Login Realizado Com sucesso{0}", Environment.NewLine);
+
             }
             catch
             {
-                WritetextFile.SalvaTxtBk("Erro: Erro ao tentar realizar Login. Tela do erro na pasta Falhas");
+                erro += string.Format("Erro: Erro ao tentar realizar Login. Tela do erro na pasta Falhas {0}", Environment.NewLine);
                 var s = _chrome.GetScreenshot();
                 s.SaveAsFile(_screenshotErro + "//LoginBack.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
@@ -75,13 +79,13 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 AjustClick.ClickById("menuConsultarLeiloes", _chrome);
                 if (_chrome.Url.Contains("Leilao/ListarLeiloes"))
                 {
-                    WritetextFile.SalvaTxtBk("Consulta de leilões realizada com sucesso.");
+                    success += string.Format("Sucesso: Consulta de leilões realizada com sucesso {0}", Environment.NewLine);
                 }
 
             }
             catch(Exception e)
             {
-                WritetextFile.SalvaTxt("Erro: Erro ao tentar Acessar Consulta de Leilões. Tela do erro na pasta Falhas");
+                erro += string.Format("Erro: Erro ao tentar Acessar Consulta de Leilões. Tela do erro na pasta Falhas {0}", Environment.NewLine);
                 var s = _chrome.GetScreenshot();
                 s.SaveAsFile(_screenshotErro + "//ConsultaLeiloes.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
 
@@ -137,11 +141,11 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div.col-md-12.MarginGeral > div > button").Click();
                 if (_chrome.Url.Contains("/Leilao/ListarLeiloes"))
                 {
-                    WritetextFile.SalvaTxtBk("Leilão criado com Sucesso");
+                    success += string.Format("Leilão criado com Sucesso {0}", Environment.NewLine);
                     _chrome.Close();
                 }
 
-                WritetextFile.SalvaTxtBk("Erro: Não foi possivel criar leilão. Tela do erro na pasta Falhas");
+                erro += string.Format("Erro: Não foi possivel criar leilão. Tela do erro na pasta Falhas {0}", Environment.NewLine);
                 var s = _chrome.GetScreenshot();
                 s.SaveAsFile(_screenshotErro + "CriarLeilao.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
                 _chrome.Close();          
@@ -149,7 +153,7 @@ namespace FluxosTestes_Vip.Fluxo_Back
             }
             catch (Exception e)
             {
-                WritetextFile.SalvaTxt("Erro: Erro ao tentar criar leilão. Tela do erro na pasta Falhas");
+                erro += string.Format("Erro: Erro ao tentar criar leilão. Tela do erro na pasta Falhas {0}", Environment.NewLine);
                 var s = _chrome.GetScreenshot();
                 s.SaveAsFile(_screenshotErro + "CriarLeilao.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg); 
             }
@@ -203,19 +207,18 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 _chrome.FindElementByCssSelector("#form-control > div > div:nth-child(3) > div > div.col-md-12.MarginGeral > div > button").Click();
                 if (_chrome.Url.Contains("/Leilao/ListarLeiloes"))
                 {
-                    WritetextFile.SalvaTxtBk("Leilão criado com Sucesso");
+                    success += string.Format("Sucesso: Leilão Online criado com Sucesso {0}", Environment.NewLine);
                     _chrome.Close();
                 }
-
-                WritetextFile.SalvaTxtBk("Erro: Não foi possivel criar leilão. Tela do erro na pasta Falhas");
-                var s = _chrome.GetScreenshot();
+                erro += string.Format("Erro: Não foi possivel criar leilão Online. Tela do erro na pasta Falhas {0}", Environment.NewLine);
+                 var s = _chrome.GetScreenshot();
                 s.SaveAsFile(_screenshotErro + "CriarLeilao.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
                 _chrome.Close();
             }
             catch (Exception e)
             {
-                WritetextFile.SalvaTxt("Erro: Erro ao tentar criar leilão. Tela do erro na pasta Falhas");
-                var s = _chrome.GetScreenshot();
+                erro += string.Format("Erro: Erro ao tentar criar leilão Online. Tela do erro na pasta Falhas {0}", Environment.NewLine);
+               var s = _chrome.GetScreenshot();
                 s.SaveAsFile(_screenshotErro + "CriarLeilao.Jpeg", OpenQA.Selenium.ScreenshotImageFormat.Jpeg);
             }
         
@@ -231,8 +234,7 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 LoginBack();
                 //Veiculos Cadastrados
                 AjustClick.ClickById("qtdVeiculos", _chrome);
-                string success = string.Format("{0}", Environment.NewLine);
-                string erro1 = string.Format("{0}", Environment.NewLine);
+               
 
                 if (_chrome.Url.Contains("Veiculo/ListarVeiculos"))
                 {
@@ -241,7 +243,7 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 }
                 else
                 {
-                  erro1 += string.Format("Erro: Não foi possivel acessar o Link Quantidade de Veículos {0}", Environment.NewLine);
+                  erro += string.Format("Erro: Não foi possivel acessar o Link Quantidade de Veículos {0}", Environment.NewLine);
                 }
                 
                 LoginBack();
@@ -252,7 +254,7 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 }
                 else
                 {
-                    erro1 += string.Format("Erro: Não foi possivel acessar o Link Lista de Leilões {0}", Environment.NewLine);
+                    erro += string.Format("Erro: Não foi possivel acessar o Link Lista de Leilões {0}", Environment.NewLine);
 
                 }
                 LoginBack();
@@ -265,7 +267,7 @@ namespace FluxosTestes_Vip.Fluxo_Back
                 }
                 else
                 {
-                    erro1 += string.Format("Erro: Não foi possivel acessar o Link Lista de Usuarios {0}", Environment.NewLine);
+                    erro += string.Format("Erro: Não foi possivel acessar o Link Lista de Usuarios {0}", Environment.NewLine);
                 }
                 WritetextFile.SalvaTxtBk(success+"\n"+erro1);
                 _chrome.Close();
@@ -281,11 +283,7 @@ namespace FluxosTestes_Vip.Fluxo_Back
 
         #endregion
 
-
-
         #endregion
-
-
 
     }
 }

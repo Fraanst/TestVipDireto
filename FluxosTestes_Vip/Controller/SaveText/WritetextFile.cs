@@ -21,7 +21,7 @@ namespace FluxosTestes_Vip.Controller
 
             string line1 = "************************************************";
             string line2 = Erro;
-             string line3 = "************************************************";
+            string line3 = "************************************************";
             string lines = line1 +"\n"+ line2 +"\n"+ line3;
              // System.IO.File.WriteAllLines(LogErro, lines);
             System.IO.File.WriteAllText(LogErro, lines);
