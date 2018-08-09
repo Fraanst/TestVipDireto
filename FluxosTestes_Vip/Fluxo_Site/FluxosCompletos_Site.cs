@@ -29,26 +29,6 @@ namespace FluxosTestes_Vip.Fluxo_Site
             _chrome = new ChromeDriver();
         }
         #endregion
-
-        #region Atributos
-        public string Nome = "Paulo Ricardo";
-        public string Apelido = "paulo";
-        public string Email = "Paulo@gmail.com";
-        public string Senha = "P123456";
-        public string CPF = "14936166928";
-        public string RG = "400107648";
-        public string DtaRg = "20121990";
-        public string Cel = "41995454672";
-        public string tel = "9999999999";
-        public string cep = "80010080";
-        public string EndNumero = "226";
-        public string EndCom = "Andar 9";
-        public string ValorMin = "1000000";
-        public string Valormax = "2000000";
-        //links menu
-        public string LinkDados = "MEUS DADOS";
-        #endregion
-
         #region FechaChrome
         public void fecha()
         {
