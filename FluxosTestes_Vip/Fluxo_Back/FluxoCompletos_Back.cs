@@ -33,16 +33,7 @@ namespace FluxosTestes_Vip.Fluxo_Back
             _chrome = new ChromeDriver();
 
         }
-        #endregion
-
-        #region atributos
-        public string Login = "admin";
-        public string Senha = "123456";
-        public string codigo = "1111";
-        public string Dtaleilao = "23/Novembro/2017 18:45";
-        public string DtaFimleilao = "27/Novembro/2017 20:45";
-        #endregion
-
+        
         #region Métodos Testes
 
         #region Login 
